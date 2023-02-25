@@ -43,6 +43,8 @@ call plug#begin()
 
 " Make sure you use single quotes
 
+Plug 'tpope/vim-fugitive'
+
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
