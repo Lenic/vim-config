@@ -44,6 +44,7 @@ call plug#begin()
 " Make sure you use single quotes
 
 Plug 'tpope/vim-fugitive'
+Plug 'junegunn/gv.vim'
 
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -121,6 +122,8 @@ function! GitFZF()
   endif
   exe 'FZF ' . path
 endfunction
+
+let g:coc_global_extensions = ['coc-prettier','coc-html','coc-eslint','coc-vetur','coc-tsserver','coc-python','coc-json','coc-css']
 
 command! GitFZF call GitFZF()
 nnoremap <silent>cp :GitFZF<CR>
