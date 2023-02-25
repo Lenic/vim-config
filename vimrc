@@ -167,3 +167,5 @@ let g:ctrlsf_position = 'bottom'
 nnoremap <silent>ck :CtrlSF<space>
 
 nnoremap <C-o> <Plug>(expand_region_expand)
+
+command! -nargs=0 ESLintFix :CocCommand eslint.executeAutofix
