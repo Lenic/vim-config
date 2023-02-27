@@ -1,5 +1,17 @@
 set encoding=utf-8
 
+if has("gui_running")
+  if has("gui_gtk2")
+    set guifont=Inconsolata\ 12
+  elseif has("gui_macvim")
+    set guifont=Sarasa\ Mono\ SC\ Nerd\ Regular:h14
+  elseif has("gui_win32")
+    set guifont=Consolas:h11:cANSI
+  endif
+endif
+" set guifont=Sarasa Mono SC Nerd\ Regular:h16
+set guioptions=
+
 set undodir=~/.vim/.undo//
 set backupdir=~/.vim/.backup//
 set directory=~/.vim/.swp//
