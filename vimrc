@@ -40,8 +40,8 @@ syntax on
 set re=0
 
 set hlsearch
-" set relativenumber
-set number
+set relativenumber
+" set number
 set cursorline
 
 call plug#begin()
