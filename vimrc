@@ -184,3 +184,4 @@ nnoremap <silent>ck :CtrlSF<space>
 nnoremap <C-p> <Plug>(expand_region_expand)
 
 command! -nargs=0 ESLintFix :CocCommand eslint.executeAutofix
+nnoremap <silent>ff :call CocAction('format')<CR>
