@@ -29,7 +29,6 @@ set smartindent
 
 set foldmethod=syntax
 set foldlevelstart=99
-nnoremap <space> @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR>
 
 filetype plugin indent on
 filetype indent on
@@ -86,6 +85,8 @@ Plug 'lifepillar/vim-solarized8'
 
 Plug 'dyng/ctrlsf.vim'
 
+Plug 'terryma/vim-expand-region'
+
 " Initialize plugin system
 " - Automatically executes `filetype plugin indent on` and `syntax enable`.
 call plug#end()
@@ -100,7 +101,7 @@ if exists('+termguicolors')
   set termguicolors
 endif
 
-set background=dark
+" set background=dark
 colorscheme solarized8
 
 inoremap <silent>jk <esc>
@@ -128,14 +129,14 @@ let $FZF_DEFAULT_COMMAND = 'rg --files --hidden'
 " If you want gitignored files:
 "let $FZF_DEFAULT_COMMAND = 'rg --files --no-ignore-vcs --hidden'
 function! GitFZF()
-  let path = trim(system('cd '.shellescape(expand('%:p:h')).' && git rev-parse --show-toplevel'))
-  if !isdirectory(path)
-    let path = expand('%:p:h')
-  endif
-  exe 'FZF ' . path
+let path = trim(system('cd '.shellescape(expand('%:p:h')).' && git rev-parse --show-toplevel'))
+if !isdirectory(path)
+let path = expand('%:p:h')
+endif
+exe 'FZF ' . path
 endfunction
 
-let g:coc_global_extensions = ['coc-prettier','coc-html','coc-eslint','coc-vetur','coc-tsserver','coc-python','coc-json','coc-css']
+let g:coc_global_extensions = ['coc-prettier','coc-html','coc-eslint','coc-vetur','coc-tsserver', 'coc-json','coc-css']
 
 command! GitFZF call GitFZF()
 nnoremap <silent>cp :GitFZF<CR>
@@ -149,6 +150,8 @@ command! -nargs=0 CopyFilename :let @*=expand("%:t")
 
 nnoremap <C-n> :NERDTreeFocus<CR>
 let g:NERDTreeMinimalMenu=1
+let g:NERDTreeDirArrowExpandable = '+'
+let g:NERDTreeDirArrowCollapsible = '-'
 
 let g:user_emmet_install_global = 1
 let g:user_emmet_expandabbr_key = '<c-j>'
@@ -160,26 +163,26 @@ let g:use_emmet_complete_tag = 1
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
 " other plugin before putting this into your config
 inoremap <silent><expr> <TAB>
-      \ coc#pum#visible() ? coc#pum#next(1) :
-      \ CheckBackspace() ? "\<Tab>" :
-      \ coc#refresh()
+  \ coc#pum#visible() ? coc#pum#next(1) :
+  \ CheckBackspace() ? "\<Tab>" :
+  \ coc#refresh()
 inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 
 " Make <CR> to accept selected completion item or notify coc.nvim to format
 " <C-g>u breaks current undo, please make your own choice
 inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
-                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+                          \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
 function! CheckBackspace() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
+let col = col('.') - 1
+return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-let g:ctrlsf_context = '-C 0'
+let g:ctrlsf_context = '-C 3'
 let g:ctrlsf_default_root = 'project'
 let g:ctrlsf_position = 'bottom'
 
-nnoremap <silent>ck :CtrlSF<space>
+nnoremap ck :CtrlSF<space>
 
 nnoremap <C-p> <Plug>(expand_region_expand)
 
@@ -187,5 +190,25 @@ command! -nargs=0 ESLintFix :CocCommand eslint.executeAutofix
 
 nnoremap <silent>ff :call CocAction('format')<CR>
 
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent>gd <Plug>(coc-definition)
+nmap <silent>gy <Plug>(coc-type-definition)
+
+function! Zoom ()
+    " check if is the zoomed state (tabnumber > 1 && window == 1)
+    if tabpagenr('$') > 1 && tabpagewinnr(tabpagenr(), '$') == 1
+        let l:cur_winview = winsaveview()
+        let l:cur_bufname = bufname('')
+        tabclose
+
+        " restore the view
+        if l:cur_bufname == bufname('')
+            call winrestview(cur_winview)
+        endif
+    else
+        tab split
+    endif
+endfunction
+nmap <leader>z :call Zoom()<CR> 
+
+map K <Plug>(expand_region_expand)
+map J <Plug>(expand_region_shrink)
