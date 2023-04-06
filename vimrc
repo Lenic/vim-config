@@ -104,6 +104,13 @@ endif
 " set background=dark
 colorscheme solarized8
 
+" Set light/dark theme based on time
+if strftime("%H") < 12 && strftime("%H") > 7
+  set background=light
+else
+  set background=dark
+endif
+
 inoremap <silent>jk <esc>
 
 let mapleader="\<space>"
