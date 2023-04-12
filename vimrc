@@ -42,6 +42,7 @@ set hlsearch
 set relativenumber
 " set number
 set cursorline
+set cursorcolumn
 
 call plug#begin()
 " The default plugin directory will be as follows:
@@ -146,7 +147,7 @@ endfunction
 let g:coc_global_extensions = ['coc-prettier','coc-html','coc-eslint','coc-vetur','coc-tsserver', 'coc-json','coc-css']
 
 command! GitFZF call GitFZF()
-nnoremap <silent>cp :GitFZF<CR>
+nnoremap <silent>cpl :GitFZF<CR>
 
 command! -nargs=0 Prettier :CocCommand prettier.forceFormatDocument
 nnoremap <silent>xb :Buffers<CR>
@@ -154,7 +155,9 @@ nnoremap <silent>xb :Buffers<CR>
 command! -nargs=0 CopyRelativePath :let @*=expand("%")
 command! -nargs=0 CopyAbsolutePath :let @*=expand("%:p")
 command! -nargs=0 CopyFilename :let @*=expand("%:t")
+nnoremap cpp :let @+ = expand("%")<CR>
 
+nnoremap tt :NERDTreeFind<CR>
 nnoremap <C-n> :NERDTreeFocus<CR>
 let g:NERDTreeMinimalMenu=1
 let g:NERDTreeDirArrowExpandable = '+'
